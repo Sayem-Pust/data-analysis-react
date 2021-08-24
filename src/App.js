@@ -14,6 +14,11 @@ const App = () => {
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false)
 
+  const [page, setPage] = useState(1)
+  // const [lastPage, setLastPage] = useState(0);
+  const perPage = 9;
+  let lastPage = Math.ceil(contacts?.length / perPage);
+
   useEffect(() => {
     axios.get("https://data-csv-demo.herokuapp.com/api/data").then((res) => {
       setContacts(res.data);
@@ -106,6 +111,22 @@ const App = () => {
         setIsLoading(false);
       });
   };
+  const load = () => {
+    setPage(
+      page + 1
+    );
+  };
+  console.log(page)
+  let button
+  if (page !== lastPage) {
+    button = (
+      <div>
+        <button onClick={load}>
+          Load More
+        </button>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <Loading />;
@@ -147,7 +168,7 @@ const App = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {contacts?.map((contact) => (
+                  {contacts?.slice(0, page * perPage).map((contact) => (
                     <Fragment key={contact.id}>
                       {editContactId === contact.id ? (
                         <EditableRow
@@ -167,6 +188,7 @@ const App = () => {
                 </tbody>
               </table>
             </form>
+            {button}
           </>
         ) : (
           <h2>Please Upload A CSV File or Add Data From the Admin</h2>
