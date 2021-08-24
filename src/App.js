@@ -113,59 +113,66 @@ const App = () => {
 
   return (
     <>
-      <Header/>
-    <div className="app-container" >
-      <LineChart contacts={contacts} />
-      <h1 className="table-head">Please Upload CSV File</h1>
-      <h1 className="table-head">If you edit data, yoi will find it at the bottom</h1>
-      <form onSubmit={handleCSVSubmit}>
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-        <button type="submit">Submit</button>
-      </form>
-      {contacts?.length > 0 ? (
-        <>
-          <h1 className="table-head">Data</h1>
-          <h3 className="table-head">For Simplicity, I will show only 30 dataset</h3>
-          <form onSubmit={handleEditFormSubmit}>
-            <table>
-              <thead>
-                <tr>
-                  <th>Trade Code</th>
-                  <th>High</th>
-                  <th>Low</th>
-                  <th>Open</th>
-                  <th>Close</th>
-                  <th>Volume</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {contacts?.map((contact) => (
-                  <Fragment key={contact.id}>
-                    {editContactId === contact.id ? (
-                      <EditableRow
-                        editFormData={editFormData}
-                        handleEditFormChange={handleEditFormChange}
-                        handleCancelClick={handleCancelClick}
-                      />
-                    ) : (
-                      <ReadOnlyRow
-                        contact={contact}
-                        handleEditClick={handleEditClick}
-                        handleDeleteClick={handleDeleteClick}
-                      />
-                    )}
-                  </Fragment>
-                ))}
-              </tbody>
-            </table>
-          </form>
-        </>
-      ) : (
-        <h2>Please Upload A CSV File or Add Data From the Admin</h2>
-      )}
+      <Header />
+      <div className="app-container">
+        <LineChart contacts={contacts} />
+        <h1 className="table-head">Please Upload CSV File</h1>
+        <h3 className="table-head">
+          If you edit data, you will find it at the bottom
+        </h3>
+        <h3 className="table-head">
+          <a href="https://data-csv-demo.herokuapp.com/api/"> backend api </a>
+        </h3>
+        <form onSubmit={handleCSVSubmit}>
+          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+          <button type="submit">Submit</button>
+        </form>
+        {contacts?.length > 0 ? (
+          <>
+            <h1 className="table-head">Data</h1>
+            <h3 className="table-head">
+              For Simplicity, I will show only 30 dataset
+            </h3>
+            <form onSubmit={handleEditFormSubmit}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Trade Code</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Open</th>
+                    <th>Close</th>
+                    <th>Volume</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {contacts?.map((contact) => (
+                    <Fragment key={contact.id}>
+                      {editContactId === contact.id ? (
+                        <EditableRow
+                          editFormData={editFormData}
+                          handleEditFormChange={handleEditFormChange}
+                          handleCancelClick={handleCancelClick}
+                        />
+                      ) : (
+                        <ReadOnlyRow
+                          contact={contact}
+                          handleEditClick={handleEditClick}
+                          handleDeleteClick={handleDeleteClick}
+                        />
+                      )}
+                    </Fragment>
+                  ))}
+                </tbody>
+              </table>
+            </form>
+          </>
+        ) : (
+          <h2>Please Upload A CSV File or Add Data From the Admin</h2>
+        )}
       </div>
-      </>
+    </>
   );
 };
 
